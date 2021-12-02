@@ -1,0 +1,71 @@
+BEGIN
+  MODE PAGE = STRUCT(STRING key, STRING value);
+  MODE BOOK = [ 1:38 ] PAGE;
+
+  BOOK list = (
+    PAGE("A", ".-"),    PAGE("B", "-..."),  PAGE("C", "-.-."),
+    PAGE("D", "-.."),   PAGE("E", "."),     PAGE("F", "..-."),
+    PAGE("G", "--."),   PAGE("H", "...."),  PAGE("I", ".."),
+    PAGE("J", ".---"),  PAGE("K", "-.-"),   PAGE("L", ".-.."),
+    PAGE("M", "--"),    PAGE("N", "-."),    PAGE("O", "---"),
+    PAGE("P", ".--."),  PAGE("Q", "--.-"),  PAGE("R", ".-."),
+    PAGE("S", "..."),   PAGE("T", "-"),     PAGE("V", "...-"),
+    PAGE("W", ".--"),   PAGE("X", "-..-"),  PAGE("Y", "-.--"),
+    PAGE("Z", "--.."),
+
+    PAGE("0", "-----"), PAGE("1", ".----"), PAGE("2", "..---"),
+    PAGE("3", "...--"), PAGE("4", "....-"), PAGE("5", "....."),
+    PAGE("6", "-...."), PAGE("7", "--..."), PAGE("8", "---.."),
+    PAGE("9", "----.")
+  );
+
+  PROC convert from morse = ([] STRING code, BOOL mode) STRING: (
+    STRING result := "";
+
+    IF mode = TRUE THEN
+
+      FOR x FROM LWB code TO UPB code DO
+        STRING char = code[x];
+
+        FOR y FROM LWB list TO UPB list DO
+          PAGE item = list[y];
+
+          IF key OF item = char THEN
+            result := result + " " + value OF item
+          FI
+        OD
+      OD
+
+    ELSE
+
+      FOR x FROM LWB code TO UPB code DO
+        STRING morse = code[x];
+
+        FOR y FROM LWB list TO UPB list DO
+          PAGE item = list[y];
+
+          IF value OF item = morse THEN
+            result := result + key OF item
+          FI
+        OD
+      OD
+
+    FI;
+
+    result
+  );
+
+  print(
+    convert from morse(
+      (
+        "P",
+        "A",
+        "N",
+        "D",
+        "A"
+      ),
+      TRUE
+    )
+  )
+
+END

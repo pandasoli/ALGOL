@@ -1,0 +1,35 @@
+PR include "./lib/get employees.a68" PR;
+
+PROC delete employee = (STRING employee id) STRING:
+BEGIN
+  FLEX [ 1:0 ] MANYEMPLOYEES employees := get employees();
+  FILE out file;
+
+  open(out file, "data.csv", stand out channel);
+  put(out file, ("ID,NAME,AGE", new line));
+
+  FOR x FROM 1 TO UPB employees DO
+    STRING id := id OF employees[x][1];
+
+    IF id /= employee id THEN
+      put(
+        out file,
+        (
+          id,
+          ",",
+          name OF employees[x][1],
+          ",",
+          age OF employees[x][1],
+          new line
+        )
+      )
+    FI
+
+  OD;
+
+  close(out file);
+
+  print(new line);
+
+  ""
+END

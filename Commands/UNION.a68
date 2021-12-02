@@ -1,0 +1,15 @@
+BEGIN
+  MODE VALUE = UNION(STRING, INT, REAL, BOOL);
+  VALUE val1 := "eliton";
+  VALUE val2 := 303;
+  VALUE val3 := 303.2;
+  VALUE val4 := FALSE;
+
+  printf((
+    $gl$,
+    val1,
+    val2,
+    val3,
+    val4
+  ))
+END

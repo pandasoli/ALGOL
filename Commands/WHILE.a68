@@ -1,0 +1,9 @@
+BEGIN
+  INT tmp := 0;
+
+  WHILE tmp < 5 DO
+    print(("Hello, World!", new line));
+    tmp +:= 1
+  OD
+
+END

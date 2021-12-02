@@ -1,0 +1,10 @@
+BEGIN
+  #
+    type 1
+  #
+
+  CO
+    type 2
+  CO
+
+END

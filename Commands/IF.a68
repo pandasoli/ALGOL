@@ -1,0 +1,28 @@
+BEGIN
+  # = | /= | < | <= | > | >= | OR | AND #
+
+  IF 12 = 12 THEN
+    print( "12 is equal to 12" )
+  FI;
+
+  IF 12 /= 13 THEN
+    print( "12 not is equal to 13" )
+  FI;
+
+  IF 12 /= 13 AND 12 = 12 THEN
+    print( "12 not is equal to 13 and 12 is equal to 12" )
+  FI;
+
+  IF 12 /= 13 OR 12 = 12 THEN
+    print( "12 not is equal to 13 or 12 is equal to 12" )
+  FI;
+
+  IF 12 = 13 THEN
+    print( "12 is equal to 13" )
+  ELIF 12 > 13 THEN
+    print( "12 is greater than 13" )
+  ELSE
+    print( "12 not is equal to 13 and 12 not is greater to 13" )
+  FI
+
+END

@@ -1,0 +1,43 @@
+BEGIN
+  # Show a snowfall           #
+  # Language: ALGOL 68        #
+
+  [ 1 : 12 ] STRING lines;
+  INT k, turns, nturns;
+
+  lines[1] := "01. * *  **   *   ******   *   *";
+  lines[2] := "02.  *   *   *  **      *   *   ";
+  lines[3] := "03.  *  *  **   *  ***  *  *  * ";
+  lines[4] := "04.   *   *   *   ***  *   *   *";
+  lines[5] := "05. *  * ** **   *  *   * *  *  ";
+  lines[6] := "06.  ** *    *   *  ** ****  ** ";
+  lines[7] := "07. *   *   ***   **** ** *    *";
+  lines[8] := "08.   *    ***  *   *   *  *  **";
+  lines[9] := "09.  *   *  **** *  *  *  *  ** ";
+  lines[10] := "10.  *  *  *  ***  **  **  * *  ";
+  lines[11] := "11.  ** * **   *  *  *** * * * *";
+  lines[12] := "12. *  * **   ** *  ** * * * ** ";
+
+  nturns := 2;
+  FOR turns FROM 1 TO nturns DO
+    k := 12;
+    WHILE k > 1 DO
+      system ( "cls" );
+      FOR x FROM k TO 12 DO
+        print ( lines[x] );
+        print ( newline )
+      OD;
+      FOR x FROM 1 TO k DO
+        print ( lines[x] );
+        print ( newline )
+      OD;
+      system ("timeout -t 1 >nul");
+      k -:= 1
+    OD
+  OD;
+
+  print ( newline );
+  print ( "Tanks for watching." );
+  print ( newline )
+
+END

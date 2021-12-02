@@ -1,0 +1,59 @@
+BEGIN
+  [ 1:2 ] REAL number;
+
+  REAL option := 0, result := 0.00;
+  STRING msgerror := "";
+
+  WHILE TRUE DO
+    system("cls");
+
+    IF msgerror /= "" THEN
+      print(($gl$, msgerror))
+    ELSE
+      printf(($gl$, whole(result, 0)))
+    FI;
+
+    printf((
+      $gl$,
+      "",
+      "1. Multiplicar",
+      "2. Dividir",
+      "3. Adicionar",
+      "4. Subtrair dois numeros",
+      "",
+      "0. Sair",
+      "",
+      "Escolha uma opcao: "
+    ));
+    read( option );
+
+    IF option = 0 THEN
+      stop
+    FI;
+
+    IF option = 1 OR option = 2 OR option = 3 OR option = 4 THEN
+      msgerror := "";
+
+      print ( "Digite um numero: " );
+      read ( number[1] );
+
+      IF option /= 4 THEN
+        print ( "Digite mais um numero: " );
+        read ( number[2] )
+      FI
+    FI;
+
+    IF option = 1 THEN
+      result := number[1] * number[2]
+    ELIF option = 2 THEN
+      result := number[1] / number[2]
+    ELIF option = 3 THEN
+      result := number[1] + number[2]
+    ELIF option = 4 THEN
+      result := number[1] - 2
+    ELSE
+      msgerror := "Erro: opcao invalida!"
+    FI
+
+  OD
+END

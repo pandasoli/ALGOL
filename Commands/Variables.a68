@@ -1,0 +1,35 @@
+BEGIN
+  #
+    := for normal variables and arrays
+    = for constant variables
+  #
+
+  INT  int = 303;
+  REAL real = 303.0;
+  CHAR char = "y";
+  BOOL boolean = FALSE;
+  STRING string = "Hello, World!";
+  COMPL cp = 303;
+  BITS bits = 2r11111;
+  [ 1:2 ] STRING array := ("Hello, ", "World!");
+
+  MODE MODEL = STRUCT(
+    STRING name,
+    STRING nickname
+  );
+  MODEL model = MODEL( "Eliton", "303" );
+
+  printf((
+    $gl$,
+    int,       # +303                                            Guarda números inteiros       #
+    real,      # +3.03000000000000e  +2                          Guarda números reais          #
+    char,      # y                                               Guarda apenas um caractere    #
+    boolean,   # F                                               Guarda um boolean             #
+    string,    # Hello, World!                                   Guarda uma string             #
+    cp,        # +3.03000000000000e  +2+0.00000000000000e  +0    Guarda um modelo de variável  #
+    bits,      # FFFFFFFFFFFFFFFFFFFFFFFFFFFTTTTT                Guarda uma sequencia de bits  #
+    array,     # Hello, World!                                   Guarda uma array              #
+    model,     # Eliton303                                       Guarda um modelo de variável  #
+  ))
+
+END

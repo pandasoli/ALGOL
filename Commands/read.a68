@@ -1,0 +1,22 @@
+BEGIN
+  INT num := 0;
+  STRING str := "";
+  CHAR ch := "a";
+
+  print((new line, "Type a number: "));
+  read( num );
+
+  print(("Type a text: "));
+  read((new line, str, new line));
+
+  print(("Type one character: "));
+  ch := read char;
+
+  printf((
+    $gl$,
+    " ",
+    "number: " + whole(num, 0),
+    "text: " + str,
+    "charater: " + ch
+  ))
+END
