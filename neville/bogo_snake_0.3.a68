@@ -1,0 +1,471 @@
+#!/usr/bin/a68g --script #
+# -*- coding: utf-8 -*- #
+
+########################################################
+# A very crude example of LIST manipulation in Algol68 #
+########################################################
+
+########################
+# define some globals. #
+########################
+BOOL 
+    with curses := TRUE,
+    with status := TRUE,
+    with stty := TRUE;
+
+INT shrink=1;
+
+MODE ICON = CHAR;
+ICON
+    empty icon    = " ",
+    teleport icon = "+",
+    gold icon     = "*";
+
+CHAR # command characters #
+     cheat    = "!",
+     teleport = "+",
+     clear    = "c",
+     refresh  = "r", # REPR 12, ^L #
+     ctrl c   = "b", # REPR 3, ^C #
+     quit     = "q";
+
+INT # some random counters #
+    cheat count := 0,
+    died count := 0,
+    gold count := 0,
+    loop count := 0,
+    move count := 0,
+    teleport count := 0;
+
+############################
+# Define what a PAGE is... #
+############################
+MODE NEWPAGE=[0][0]CHAR;
+MODE PAGE = REF NEWPAGE;
+
+OP INITAB = (PAGE self, CHAR c)PAGE:(
+    FOR line FROM LWB self TO UPB self DO
+        FOR column FROM LWB self[line] TO UPB self[line] DO
+            self[line][column]:= c
+        OD
+    OD;
+    self
+);
+
+OP REPR = (PAGE self)STRING: (
+    STRING buf, out;
+    FILE file; associate(file,buf);
+    FOR line FROM LWB self TO UPB self DO
+        buf := "";
+        put(file, (whole(line,0),": ",self[line], new line));
+        out +:= buf
+    OD;
+    buf := ""; put(file, new page);
+    close(file);
+    out+buf
+);
+
+[0:curses lines OVER shrink-1][0:curses columns OVER shrink-1]ICON page; page INITAB empty icon;
+
+INT
+    top line = LWB page,
+    bottom line = UPB page,
+    left column = LWB page[LWB page],
+    right column = UPB page[LWB page];
+
+POS lwb title = (top line, left column);
+POS lwb status = (bottom line, left column);
+
+##############################
+# Define what a POS+DIR are  #
+##############################
+
+MODE POS = STRUCT(INT line, column);
+MODE OPTPOS = UNION(VOID, POS);
+
+MODE DIR = STRUCT(INT dline, dcolumn);
+
+OP + = (POS pos, DIR dir)POS: (
+  line OF pos + dline OF dir,
+  column OF pos + dcolumn OF dir
+);
+
+PROC random pos = POS: (
+  ENTIER (random * UPB page + LWB page),
+  ENTIER (random * UPB page[LWB page] + LWB page[LWB page])
+);
+
+MODE DIRATTR = STRUCT(STRING desc, ICON icon, CHAR input, DIR dir, POS limit, PROC VOID colour);
+MODE OPTDIRATTR = UNION(VOID, DIRATTR);
+
+[]DIRATTR dir attr list = (
+    ("North","^","A",(-1, 0),(top line,           right column OVER 2),curses magenta),
+    ("East", ">","C",( 0, 1),(bottom line OVER 2, right column),       curses blue),
+    ("West", "<","D",( 0,-1),(bottom line OVER 2, left  column),       curses red),
+    ("South","v","B",( 1, 0),(bottom line,        right column OVER 2),curses green)
+);
+
+PROC get dir attr = (CHAR c)OPTDIRATTR:(
+    OPTDIRATTR out := EMPTY;
+    FOR enum TO UPB dir attr list DO
+        DIRATTR this = dir attr list[enum];
+        IF c = input OF this THEN
+            colour OF this;
+            out := this;
+            done
+        FI
+    OD;
+done: out
+);
+
+PROC page splash = VOID: (
+    FOR enum TO UPB dir attr list DO
+        DIRATTR this = dir attr list[enum];
+        colour OF this;
+        curses move(line OF limit OF this,column OF limit OF this);
+        curses putchar((desc OF this)[1])
+    OD;
+    curses white;
+    curses move(line OF lwb status, column OF lwb status ); curses putchar("S");
+    curses move(line OF lwb title, column OF lwb title ); curses putchar("T");
+    curses refresh
+);
+
+####################################################
+# Define what a LIST is and some useful operators. #
+####################################################
+
+MODE NEWLIST = STRUCT(
+    UPLINK sentinel, # NB: `up OF sentinel` points to `lwb OF list` i.e. circular #
+    SUMMARY summary
+);
+MODE LIST=REF NEWLIST;
+
+MODE NEWUPLINK = STRUCT(
+    UPLINK up,
+    PAYLOAD payload
+);
+MODE UPLINK=REF NEWUPLINK;
+
+OP UPBOF = (LIST list)UPLINK: sentinel OF list;
+OP LWBOF = (LIST list)UPLINK: up OF (UPBOF list);
+
+PRIO INITAB = 1, # swapup: # =>:= = 1, +>:= = 1, # ->:= = 1,#  -=: = 1;
+
+INT uplink count := 0; # keep a counter on each UPLINK #
+
+OP INITAB = (LIST self, OPTPOS head pos)LIST:(
+
+    POS pos := CASE head pos IN
+        (POS head pos): head pos,
+        (VOID): POS(UPB page OVER 2, UPB page[LWB page] OVER 2)
+    ESAC;
+
+    sentinel OF self := ( HEAP NEWUPLINK INITAB pos );
+
+    summary OF self INITAB self;
+
+    self
+);
+
+OP INITAB = (UPLINK self, POS pos)UPLINK: (
+    up OF self := self; # n.b. circular linked-list #
+    payload OF self INITAB pos;
+    self
+);
+
+##############################################################
+# Define how to push/pop/append/truncate UPLINKs from a LIST #
+##############################################################
+# NB: Avoid using operators with the ">" character ... #
+# eg =>:= / +>:= / ->:= / +>=: / ->=: #
+
+# swap links after self #
+OP =>:= = (UPLINK left, right)UPLINK: (
+    UPLINK swap = up OF right; up OF right := up OF left; up OF left := swap
+);
+
+# insert/push link after self #
+OP +>:= = (UPLINK self, UPLINK after)UPLINK: (
+    self =>:= after; # assuming after is circular #
+    self
+);
+
+# NB:
+  - The "tail" of a list is actually the UPB (but the HEAD of the snake)
+  - The "head" of a list is actually the LWB (but the TAIL of the snake)
+#
+
+##############################################
+# These UPLINK to LIST are easier to use ... #
+##############################################
+
+# push a link after the UPB a list #
+OP +=: = (UPLINK push, LIST self) LIST:   ( # aka PUSH #
+    IF sentinel OF self ISNT NIL THEN # i.e. NO sentinel #
+        sentinel OF self +>:= push
+    ELSE
+        sentinel OF self := push
+    FI;
+    self
+);
+
+# append a link after the UPB a list #
+OP +:= = (LIST self,   UPLINK append) LIST: ( # aka APPEND #
+    append +=: self; # then simply rotate #
+    sentinel OF self := up OF sentinel OF self;
+    self
+);
+
+##############################################
+# These 'list' to LIST are easier to use ... #
+##############################################
+CO
+    l +=: LIST; add `l` to beginning/LWB of LIST     - aka push
+    l -=: LIST; remove `l` from begining/LWB of LIST - aka pop
+    LIST +:= l; add `l` to end/UPB of LIST           - aka append
+    LIST -:= l; remove `l` from end/UPB of LIST      - aka truncate
+CO
+
+# OP -:= = (LIST self)UPLINK: CO untested CO
+    ->:= UPBOF self; # # truncate from UPB ... not posssible with UPLINK only #
+
+OP -=: = (LIST self)UPLINK: ( # aka POP from LWB #
+    UPLINK out := sentinel OF self =>:= up OF sentinel OF self;
+    out
+);  # pop from beginning #
+
+##################################
+# Add some SNAKE specific fields #
+##################################
+MODE SNAKE = LIST;
+
+MODE SUMMARY = SNAKEHEAD;
+
+MODE SNAKEHEAD = STRUCT(
+    DIRATTR dir attr,
+    REAL move period,
+         prev update time
+);
+
+MODE PAYLOAD = SNAKESEGMENT;
+
+MODE SNAKESEGMENT = STRUCT(
+    POS pos, 
+    INT seq number 
+);
+
+INT snake growth = 9;
+
+OP INITAB = (REF SNAKEHEAD self, LIST body)REF SNAKEHEAD:(
+
+    dir attr OF self := dir attr list[LWB dir attr list+2]; # head east #
+    prev update time OF self := clock;
+    move period OF self := 0.02;
+
+    TO snake growth DO # initially make snake 9 links long #
+        body +:= ( HEAP NEWUPLINK INITAB pos OF payload OF (UPBOF body) )
+    OD;
+
+    self
+);
+
+OP INITAB = (REF SNAKESEGMENT self, POS pos)REF SNAKESEGMENT: (
+    pos OF self := pos;
+    seq number OF self := (uplink count +:= 1);
+    self
+);
+
+##########################################
+# Open some files for logging/debugging #
+##########################################
+FILE status out, stand log;
+STRING status line := "Status:";
+associate(status out, status line);
+IF with status THEN
+    IF with curses THEN
+        IF open(stand log, "bogo_snake.log", stand out channel) LT 0 THEN stop FI
+    ELSE
+        stand log := stand error
+    FI
+FI;
+
+[]REF FILE output list = (status out, stand log );
+
+PROC curses print string = (POS pos, STRING s)VOID: (
+    curses move(line OF pos,column OF pos);
+    FOR i TO UPB s DO curses putchar(s[i]) OD
+);
+
+PROC print status line = VOID: (
+    curses print string(lwb status, status line);
+    curses refresh
+);
+
+########################
+# Move about the page  #
+########################
+PROC move then put char = (POS pos, ICON icon)VOID: (
+    IF with curses THEN
+        curses move(line OF pos,column OF pos);
+        curses putchar(icon)
+    FI;
+    page[line OF pos][column OF pos] := icon
+);
+
+######################################################
+# increment the snake head on the desired direction. #
+######################################################
+OP +:= = (SNAKE self, DIRATTR dir attr)LIST: (
+    prev update time OF summary OF self := clock;
+    dir attr OF summary OF self := dir attr;
+
+    POS next pos := pos OF payload OF (UPBOF self) + dir OF dir attr;
+
+    self +:= ( HEAP NEWUPLINK INITAB POS(line OF next pos,column OF next pos) );
+
+    ICON icon = page[line OF next pos][column OF next pos ];
+    IF icon = gold icon THEN
+        move then put char(next pos, icon OF dir attr OF summary OF self);
+        TO snake growth DO 
+            self +:= ( HEAP NEWUPLINK INITAB POS(line OF next pos,column OF next pos) )
+        OD;
+        gold count +:= 1
+    ELSE
+        IF icon = teleport icon THEN
+            teleport count +:= 1;
+            do teleport(self)
+        ELIF icon NE empty icon THEN
+            died count +:= 1;
+            IF died count > 3 THEN goat droppings FI
+        FI;
+        move then put char(next pos, icon OF dir attr OF summary OF self);
+        VOID(-=: self);
+        move then put char(pos OF payload OF (LWBOF self), empty icon)
+    FI;
+
+    curses refresh;
+
+    move count +:= 1;
+    IF with status THEN
+        status line := "";
+        FOR i TO UPB output list DO
+            putf(output list[i], (
+                $x"clock=",   g(-0,3)$, clock,
+                $x"gold#",   g(0)":"$,gold count,
+                $x"died#",   g(0)":"$,died count,
+                $x"teleport#",   g(0)":"$,teleport count,
+                CO 
+                $x"collections=",   g(-0)$, collections,
+                $x"wait#",   g(0)":"$,move count,
+                $x"loop#",   g(0)":"$,loop count,
+                $x"self="$,   pos fmt, pos OF payload OF sentinel OF self, # line ,column, #
+                $x"-> dir="$, dir fmt, dir OF dir attr,
+                $x"recent=",  g(-0,3)$, prev update time OF summary OF self,
+                $x"self="""a""""$,icon OF dir attr OF summary OF self,
+                END CO
+                $2l$
+            ))
+        OD;
+        print status line
+    FI;
+    self
+);
+
+##############################
+# define some special treats #
+##############################
+# ToDo: make gold and teleport instance of same class #
+PROC gold add period = REAL: random*4;
+REAL gold next add time := clock + gold add period;
+
+PROC gold add = VOID: (
+    gold next add time +:= gold add period;
+    POS gold pos = random pos; 
+    curses yellow;
+    move then put char(gold pos, gold icon)
+);
+
+PROC teleport add period = REAL: random*8;
+REAL teleport next add time := clock + teleport add period;
+
+PROC do teleport = (SNAKE self)VOID: (
+    teleport count +:= 1;
+    pos OF payload OF (UPBOF self) := random pos
+);
+
+PROC teleport add = VOID:
+    teleport next add time +:= teleport add period;
+
+################################
+# Loop here until game is done #
+################################
+PROC game main loop = (SNAKE self)VOID: (
+    BOOL do quit := FALSE;
+    WHILE NOT do quit DO
+        CHAR cmd = curses get char;
+        IF cmd = null char AND FALSE THEN break FI;
+
+        OPTDIRATTR optdir attr := get dir attr(cmd);
+
+        CASE optdir attr IN
+            (DIRATTR dir attr):
+                dir attr OF summary OF self := dir attr
+        OUT
+            IF cmd = cheat THEN
+                cheat count +:=1
+            ELIF cmd = teleport THEN
+                do teleport(self)
+            ELIF cmd = refresh THEN
+                curses refresh
+            ELIF cmd = clear THEN
+                curses clear
+            ELIF cmd = ctrl c THEN
+                curses end;
+                print((REPR page, new line));
+                stop
+            ELIF cmd = quit THEN
+                do quit := TRUE # stop #
+            FI
+        ESAC;
+
+        WHILE clock > prev update time OF summary OF self + move period OF summary OF self DO # do move #
+            self +:= dir attr OF summary OF self
+        OD;
+        IF clock > gold next add time THEN gold add FI;
+        IF clock > teleport next add time THEN teleport add FI;
+
+        loop count +:= 1;
+        IF with status AND FALSE THEN
+            status line := "";
+            putf(status out,(
+                $x"clock=",   g(-0,3)$, clock,
+                $x"collections=",   g(-0)$, collections,
+                $x"wait#=",   g(0)":"$,move count,
+                $x"loop#=",   g(0)":"$,loop count
+                ,$l$
+            ));
+            print status line
+        FI;
+        preemptive sweep
+    OD
+);
+########
+# main #
+########
+IF with curses THEN curses start; curses clear; page splash FI;
+    SNAKE king snake := (HEAP NEWLIST INITAB EMPTY);
+    curses print string(lwb title, "Objective: DO NOT CRASH program! Quickly tap ARROW KEYS to move [*], q to quit");
+    INT error;
+    IF with stty THEN
+        error := system("stty raw min 0 time 10");
+            game main loop(king snake);
+        error := system("stty cooked")
+    ELSE
+        game main loop(king snake)
+    FI;
+IF with curses THEN curses end; stop FI
+EXIT
+goat droppings: 
+    IF with curses THEN curses end; stop FI;
+    print(("Goat droppings...", newline))
