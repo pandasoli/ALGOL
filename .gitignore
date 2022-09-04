@@ -1,2 +1,6 @@
-test.a68
+# bin
 .Random.seed
+
+# test files
+test.a68
+*.test.a68
