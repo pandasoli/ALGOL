@@ -1,0 +1,28 @@
+BEGIN
+  PROC join array = ([] STRING arr, STRING join) STRING: (
+    STRING str := "";
+
+    FOR x FROM 1 TO UPB arr DO
+      str +:= arr[x];
+
+      IF x /= UPB arr THEN
+        str +:= join
+      FI
+    OD;
+
+    str
+  );
+
+  printf((
+    $gl$,
+    join array(
+      (
+        "1",
+        "2",
+        "3"
+      ),
+      " ;"
+    )
+  ))
+  
+END

@@ -1,0 +1,11 @@
+BEGIN
+  print( "begin" );
+
+  GO TO end;
+
+  print( "between" );
+
+  end:
+
+  print( "end" )
+END

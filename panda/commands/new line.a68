@@ -1,0 +1,4 @@
+BEGIN
+  print(( new line, "Hello, World!", newline ));
+  print(( newline, "Hello, World!", new line))
+END

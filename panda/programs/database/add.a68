@@ -1,0 +1,49 @@
+PR include "./lib/get employees.a68" PR;
+
+PROC add employee = (STRING name, STRING age) VOID:
+BEGIN
+  FLEX [ 1:0 ] MANYEMPLOYEES employees := get employees();
+  INT new id := 0;
+
+  FOR x FROM 1 TO UPB employees DO
+    STRING this id := id OF employees[x][1];
+    INT this id int;
+    FILE rbuf;
+
+    associate(rbuf, this id);
+    get(rbuf, this id int);
+
+    IF this id int > new id THEN
+      new id := this id int
+    FI
+
+  OD;
+
+  new id +:= 1;
+
+  FILE out file;
+
+  open(out file, "data.csv", stand out channel);
+
+  put(out file, ("ID,NAME,AGE", new line));
+
+  FOR x FROM 1 TO UPB employees DO
+    put(
+      out file,
+      (
+        id OF employees[x][1],
+        ",",
+        name OF employees[x][1],
+        ",",
+        age OF employees[x][1],
+        new line
+      )
+    )
+  OD;
+
+  put(out file, (whole(new id, 0), ",", name, ",", age));
+
+  close(out file);
+
+  print(new line)
+END

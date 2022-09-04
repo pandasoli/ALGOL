@@ -1,0 +1,29 @@
+PR include "./lib/get employees.a68" PR
+PR include "./lib/complete string.a68" PR;
+
+PROC show employee = (STRING employee id) STRING:
+BEGIN
+  FLEX [ 1:0 ] MANYEMPLOYEES res := get employees();
+
+  FOR x FROM 1 TO UPB res DO
+    STRING id := id OF res[x][1];
+    STRING name := name OF res[x][1];
+    STRING age := age OF res[x][1];
+
+    IF id = employee id THEN
+      printf((
+        $gl$,
+        "  ______________________________________",
+        " /                                      \",
+        " | Employee id: " + complete string(id, 4) + "                    |",
+        " | name: " + complete string(name, 30) + " |",
+        " | age: " + complete string(age, 3) + "                             |",
+        " \______________________________________/",
+        " "
+      ))
+    FI
+
+  OD;
+
+  ""
+END

@@ -1,0 +1,79 @@
+BEGIN
+  PR include "./list.a68" PR
+  PR include "./delete.a68" PR
+  PR include "./show.a68" PR
+  PR include "./add.a68" PR;
+
+  system("clear");
+  print(new line);
+
+  loop: (
+    CHAR option := "0";
+
+    printf((
+      $gl$,
+      " 1) Add employee",
+      " 2) Remove employee",
+      " 3) Get an employee",
+      " 4) List all employees",
+      $lgl$,
+      " 0) Exit employee"
+    ));
+
+    print(" > ");
+    option := read char;
+
+    system("clear");
+    print(new line);
+
+    IF option = "0" THEN
+      stop
+    ELIF option = "1" THEN
+      STRING name, age;
+
+      printf((
+        $gl$,
+        " -- Enter the new employee information --",
+        "        leave blank to go back",
+        " "
+      ));
+
+      print(" The name: ");
+      read((name, new line));
+      read((name, new line));
+
+      IF name = "" THEN
+        GO TO loop
+      FI;
+
+      print(" The age: ");
+      read((age, new line));
+
+      IF age = "" THEN
+        GO TO loop
+      FI;
+
+      add employee(name, age)
+    ELIF option = "2" THEN
+      STRING id;
+
+      print(" Type the employee id: ");
+      read((id, new line));
+      read((id, new line));
+
+      delete employee(id)
+    ELIF option = "3" THEN
+      STRING id;
+
+      print(" Type the employee id: ");
+      read((id, new line));
+      read((id, new line));
+
+      show employee(id)
+    ELIF option = "4" THEN
+      list all()
+    FI;
+
+    GO TO loop
+  )
+END

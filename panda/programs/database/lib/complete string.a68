@@ -1,0 +1,11 @@
+
+PROC complete string = (STRING begin, INT len) STRING:
+BEGIN
+  STRING res := begin;
+
+  FOR x FROM UPB begin + 1 TO len DO
+    res +:= " "
+  OD;
+
+  res
+END

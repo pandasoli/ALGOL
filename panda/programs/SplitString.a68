@@ -1,0 +1,29 @@
+BEGIN
+  PROC split string = (STRING str, STRING split) [] STRING: (
+    INT length := 1;
+
+    FOR x FROM 1 TO UPB str DO
+      IF str[x] = "," THEN
+        length +:= 1
+      FI
+    OD;
+
+    [ 1:length ] STRING arr;
+    INT idx := 1;
+
+    FOR x FROM 1 TO UPB str DO
+      IF str[x] /= "," THEN
+        arr[idx] +:= str[x]
+      ELSE
+        idx +:= 1
+      FI
+    OD;
+
+    arr
+  );
+
+  printf((
+    $gl$,
+    split string("ola, meu nome é: eliton, e o seu?", ",")
+  ))
+END

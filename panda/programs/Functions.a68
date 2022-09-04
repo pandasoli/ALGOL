@@ -1,0 +1,12 @@
+BEGIN
+  MODE MANYINTS = FLEX[ 1:0 ] STRING;
+
+  OP +:= = (REF FLEX [] MANYINTS in out, STRING item) VOID: (
+    [LWB in out:UPB in out + 1] MANYINTS new;
+    new[LWB in out:UPB in out] := in out;
+    new[UPB new] := item;
+    in out := new
+  );
+
+  print( "test" )
+END

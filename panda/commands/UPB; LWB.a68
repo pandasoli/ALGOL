@@ -1,0 +1,21 @@
+BEGIN
+  [ 2:2 ] INT arr;
+  STRING str := "Panda";
+
+  arr[1:1] := 11; # ERROR #
+  arr[1:2] := 12;
+  arr[2:1] := 21;
+  arr[2:2] := 22;
+
+  printf((
+    $gl$,
+
+    UPB arr,
+    UPB str,
+
+    "",
+    LWB arr,
+    LWB str
+  ))
+
+END
