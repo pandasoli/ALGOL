@@ -1,6 +1,0 @@
-BEGIN
-  print( "Hello" );
-  stop;
-
-  print( "Bye" )
-END
