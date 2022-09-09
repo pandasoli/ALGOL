@@ -7,6 +7,9 @@ BEGIN
 
   print(( "Hello, World!", new line ));
 
+  # print is basicly #
+  put(stand out, "test");
+
   # Formated printing #
   #
     x         Ignore
