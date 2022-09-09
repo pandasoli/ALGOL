@@ -1,8 +1,23 @@
 BEGIN
   STRING str;
+  CHAR ch;
 
-  print(("Type a text: "));
+  print("Type a text: ");
   read( str );
 
-  print(("You said: ", str, new line))
+  #
+    read is a basicly way to write:
+      get(stand in, str);
+  #
+
+  print("Type a char: ");
+  ch := read char;
+
+  print( new line );
+  printf((
+    $gl$,
+    "You said: " + str,
+    "You said too: " + ch
+  ))
+
 END
