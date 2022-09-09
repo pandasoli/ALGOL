@@ -1,5 +1,0 @@
-BEGIN
-  system("echo Hello")
-
-  # output: Hello #
-END
