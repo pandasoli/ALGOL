@@ -1,0 +1,12 @@
+BEGIN
+  INT num;
+
+  print("Type a number to discover its square root: ");
+  read( num );
+
+  print((
+    "The square root of " + whole(num, 0) + " is " + whole(sqrt(num), 0),
+    new line
+  ))
+
+END

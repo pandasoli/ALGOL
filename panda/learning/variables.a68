@@ -1,0 +1,48 @@
+BEGIN
+  #
+    :=    Pointer
+    =     Constant
+  #
+
+  INT   int = 303;
+  REAL  rl  = 303.0;
+  COMPL cp  = 303;
+  BITS  bit = 2r11111;
+
+  CHAR           ch  := "y";
+  STRING         str := "Panda Soli";
+  [ 1:2 ] STRING arr := ("Panda", "Soli");
+
+  BOOL bool = FALSE;
+
+  MODE PERSON = STRUCT(
+    STRING name, nickname
+  )
+  
+  PERSON panda = (
+    "Panda Soli",
+    "pandasoli"
+  );
+
+  STRING
+    panda name = name OF person,
+    panda nickname = nickname OF person;
+
+  printf(($gl$,
+    "int:  ", int,
+    "rl:   ", rl,
+    "cp:   ", cp,
+    "bit:  ", bit,
+
+    "ch:   ", ch,
+    "str:  ", str,
+    "arr:  ", arr,
+
+    "bool: ", bool,
+
+    "panda:          ", panda,
+    "panda name:     ", panda name,
+    "panda nickname: ", panda nickname
+  ))
+
+END

@@ -1,0 +1,19 @@
+BEGIN
+
+  FILE file;
+  [] STRING source = (
+    "BEGIN",
+    "  system(""echo Hello"") # output: Hello #",
+    "",
+    "END"
+  );
+
+  VOID( open(file, "run system command.a68", stand out channel) );
+
+  FOR i TO UPB source DO
+    putf(file, ($gl$, source[i]))
+  OD;
+
+  close(file)
+
+END

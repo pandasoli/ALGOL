@@ -1,0 +1,21 @@
+BEGIN
+
+  FILE file;
+  STRING source;
+
+  VOID( open(file, "stop program.a68", stand in channel) );
+  on logical file end(file, (REF FILE skip) BOOL: done);
+
+  DO
+    STRING line;
+
+    getf(file, ($gl$, line));
+    source +:= line + REPR 10
+  OD;
+
+  done:
+  close(file);
+
+  print(( source, new line ))
+
+END

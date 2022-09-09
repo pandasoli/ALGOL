@@ -1,0 +1,11 @@
+BEGIN
+
+  print("Type a char: ");
+  CHAR ch = read char;
+
+  print((
+    "'" + ch + "' in ascii is " + whole(ABS ch, 0),
+    new line
+  ))
+
+END

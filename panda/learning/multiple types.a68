@@ -1,0 +1,25 @@
+BEGIN
+  MODE STRINT = UNION(STRING, INT);
+
+  PROC is str = (STRINT v) BOOL:
+    CASE v IN
+      (STRING): TRUE,
+      (INT): FALSE
+    ESAC;
+
+
+  STRINT var := 13;
+
+  print((
+    "'var' is " + (is str(var) | "" | "not ") + "a string",
+    new line
+  ));
+
+  var := "Panda";
+
+  print((
+    "'var' is " + (is str(var) | "" | "not ") + "a string",
+    new line
+  ))
+
+END

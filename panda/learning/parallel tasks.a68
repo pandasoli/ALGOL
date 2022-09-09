@@ -1,0 +1,32 @@
+BEGIN
+  PROC
+    eat = VOID: (
+      print(( "Hmm...", new line ));
+      food -:= 1;
+      words +:= 1
+    ),
+    speak = VOID: (
+      print(( "Sjshdjbd...", new line ));
+      words -:= 1
+    );
+
+  SEMA mouth = LEVEL 1;
+
+  INT
+    food := 5,
+    words := 0;
+
+  PAR (
+    WHILE food > 0 DO
+      DOWN mouth;
+      eat;
+      UP mouth
+    OD,
+    WHILE words > 0 DO
+      DOWN mouth;
+      speak;
+      UP mouth
+    OD
+  )
+
+END
