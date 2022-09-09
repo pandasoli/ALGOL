@@ -1,0 +1,20 @@
+
+PROC say hi = VOID: (
+  print(( "Hi", new line ))
+);
+
+PROC say str = (STRING str) VOID: (
+  print(( str, new line ))
+);
+
+PROC sum = (INT a, b) INT: (
+  INT res = a + b;
+  res
+);
+
+say hi;
+say str("I'm panda");
+
+print(( "1 plus 2 is equal to ", sum(1, 2) ));
+
+print(new line)

@@ -1,0 +1,8 @@
+BEGIN
+  STRING str;
+
+  print(("Type a text: "));
+  read( str );
+
+  print(("You said: ", str, new line))
+END

@@ -1,0 +1,5 @@
+(
+  PR include "lambdas.a68" PR;
+
+  print(( "10 plus 14 is equal to ", sum(10, 14) ))
+)

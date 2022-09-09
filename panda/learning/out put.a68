@@ -1,0 +1,28 @@
+BEGIN
+  # Simple printing #
+
+  print("Hello, World!");
+
+  # Printing with line break #
+
+  print(( "Hello, World!", new line ));
+
+  # Formated printing #
+  #
+    x         Ignore
+    z         Space tab
+    g         Anything
+    l         New line
+    n<width>  Number
+    <width>d  Number
+  #
+
+  printf((
+    $xxgl$,
+    "hi",
+
+    $"The correct number is " 3d l$,
+    135
+  ))
+
+END

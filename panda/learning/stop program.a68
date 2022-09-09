@@ -1,0 +1,7 @@
+BEGIN
+  print("Hello");
+
+  stop;
+
+  print("This won't be printed out")
+END

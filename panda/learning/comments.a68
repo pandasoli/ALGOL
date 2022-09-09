@@ -1,0 +1,9 @@
+BEGIN
+  # Some comment #
+
+  CO Some comment CO
+
+  COMMENT Some comment END COMMENT
+
+  print("end")
+END

@@ -1,0 +1,18 @@
+BEGIN
+  MODE PLAYER = STRUCT(
+    STRING name,
+    INT level
+  );
+
+  OP +:= = (REF PLAYER player, INT level) VOID: (
+    level OF player := level OF player + level
+  );
+
+  PLAYER pl1 := ("Panda", 2);
+
+  print(( level OF pl1, new line )); # 2 #
+  pl1 +:= 5;
+
+  print(( level OF pl1, new line )) # 7 #
+
+END
