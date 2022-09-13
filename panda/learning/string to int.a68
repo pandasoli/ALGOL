@@ -1,0 +1,11 @@
+BEGIN
+  FILE buff;
+  STRING str := "123";
+  INT res;
+
+  associate(buff, str);
+  get(buff, res);
+
+  print(res)
+
+END
