@@ -1,0 +1,24 @@
+BEGIN
+  INT num := 123;
+  STRING res;
+
+  # whole #
+  #
+    Converts v into a string of abs w chars.
+    Leading zeroes are replaced by spaces. If
+    w is positive, a "+" or" -" is always
+    included in the string. If w is negative,
+    the string is unsigned for positive v. If
+    w is zero, the shortest possible string into
+    which v can be converted is provided
+    (including a "-" if v is negative, but
+    never a "+"). If v cannot be converted
+    within abs w chars, a string of w
+    asterisks is returned (but see 7.5.3). 
+  #
+
+  res := whole(num, 0);
+  print(res)
+
+
+END
