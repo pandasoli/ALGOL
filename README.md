@@ -2,7 +2,7 @@
 
 <img src='doc/icon.png' alt='ALGOL logo icon' height='182'/>
 
-Logo by [Neville Dempsey](https://github.com/nevillednz)
+Logo by Neville
 
 <br/>
 
@@ -14,12 +14,20 @@ Logo by [Neville Dempsey](https://github.com/nevillednz)
 <br/>
 
 ## Contributors
-[Panda](panda)  
-[Neville](neville)
+| Name       | Folder             | GitHub
+| ---------- | ------------------ | --------------------------------------------
+| Panda Soli | [panda](panda)     | [pandasoli](https://github.com/pandasoli)
+| NevilleDNZ | [neville](neville) | [nevillednz](https://github.com/nevillednz)
 
 <br/>
 
 ## Projects
+ALGOL 68 Syntax highlighting for Vim  
+https://github.com/NevilleDNZ/syntax-algol68.vim
+
+ALGOL 68 RS  
+https://github.com/coolbikerdad
+
 Cat Code
 [
   ![Cat Code](doc/thumbs/cat-code.jpg)
