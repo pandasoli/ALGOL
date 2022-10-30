@@ -1,0 +1,30 @@
+
+# Creating a model #
+MODE POS = STRUCT( INT x, y );
+
+PROC get cursor pos = POS: (
+  CHAR in esc;
+  CHAR esc = REPR 27; # ESC key in ascii #
+  INT line, col;
+
+  # Turning output off #
+  VOID( system("stty raw -echo eol R") );
+
+  print(esc + "[6n");
+  readf(( $a"["g(-0)";"g(-0)"r"$, in esc, line, col ));
+
+  # Turning output on again #
+  VOID( system("stty cooked echo") );
+
+  # In the return the model can be implicit #
+  (col, line)     # same as: POS(col, line) #
+);
+
+# Calling the function #
+POS pos = get cursor pos;
+
+print((
+  "col: ", x OF pos, new line,
+  "row: ", y OF pos,
+  new line
+))
