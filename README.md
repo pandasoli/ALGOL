@@ -21,6 +21,13 @@ Logo by Neville
 
 <br/>
 
+## Implementations
+| Person              | Link
+| ------------------- | -------
+| Marcel van der Veer | https://jmvdveer.home.xs4all.nl/en.post.announcing-algol-68-genie.html
+
+<br/>
+
 ## Projects
 ALGOL 68 Syntax highlighting for Vim  
 https://github.com/NevilleDNZ/syntax-algol68.vim
