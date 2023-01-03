@@ -9,7 +9,7 @@ Logo by Neville
 ## Communities
 [![LinkedIn: Algol68](https://img.shields.io/badge/Algol68-0a66c2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/groups/2333923)  
 [![Facebook: Algol68](https://img.shields.io/badge/Algol68-2e89ff?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/groups/Algol68)  
-[![Discord: ALGOL - ALGOrithmic Language](https://img.shields.io/badge/ALGOL%20--%20ALGOrithmic%20Language-5865f2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/96SMk6eV)
+[![Discord: ALGOL - ALGOrithmic Language](https://img.shields.io/badge/ALGOL%20--%20ALGOrithmic%20Language-5865f2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/VASsqCvs)
 
 <br/>
 
