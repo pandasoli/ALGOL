@@ -16,8 +16,8 @@ Logo by Neville
 ## Contributors
 | Name       | Folder             | GitHub
 | ---------- | ------------------ | --------------------------------------------
-| Panda Soli | [panda](panda)     | [pandasoli](https://github.com/pandasoli)
-| NevilleDNZ | [neville](neville) | [nevillednz](https://github.com/nevillednz)
+| Panda Soli | [panda](panda)     | [github/pandasoli](https://github.com/pandasoli)
+| NevilleDNZ | [neville](neville) | [github/nevillednz](https://github.com/nevillednz)
 
 <br/>
 
@@ -29,16 +29,16 @@ Logo by Neville
 <br/>
 
 ## Books
-Click [here](books/).
+[github/coolbikerdad/Algol-68-Publications](https://github.com/coolbikerdad/Algol-68-Publications)
 
 <br/>
 
 ## Projects
 ALGOL 68 Syntax highlighting for Vim  
-https://github.com/NevilleDNZ/syntax-algol68.vim
+[github/NevilleDNZ/syntax-algol68.vim](https://github.com/NevilleDNZ/syntax-algol68.vim)
 
 ALGOL 68 RS  
-https://github.com/coolbikerdad
+[github/coolbikerdad](https://github.com/coolbikerdad)
 
 Cat Code
 [
