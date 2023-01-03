@@ -28,6 +28,11 @@ Logo by Neville
 
 <br/>
 
+## Books
+Click [here](books/).
+
+<br/>
+
 ## Projects
 ALGOL 68 Syntax highlighting for Vim  
 https://github.com/NevilleDNZ/syntax-algol68.vim
