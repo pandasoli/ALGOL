@@ -43,4 +43,4 @@ ALGOL 68 RS
 Cat Code
 [
   ![Cat Code](doc/thumbs/cat-code.jpg)
-](https://github.com/pandasoli/catc-a68g)
+](https://github.com/pandasoli/cat-code)
