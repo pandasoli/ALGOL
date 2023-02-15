@@ -13,34 +13,32 @@ Logo by Neville
 
 <br/>
 
-## Contributors
+### Contributors
 | Name       | Folder             | GitHub
-| ---------- | ------------------ | --------------------------------------------
+| ---------- | ------------------ | -------
 | Panda Soli | [panda](panda)     | [github/pandasoli](https://github.com/pandasoli)
 | NevilleDNZ | [neville](neville) | [github/nevillednz](https://github.com/nevillednz)
 
 <br/>
 
-## Implementations
-| Person              | Link
-| ------------------- | -------
-| Marcel van der Veer | https://jmvdveer.home.xs4all.nl/en.post.announcing-algol-68-genie.html
+### Implementations
+|                     |    |
+| ------------------- | ---
+| Marcel van der Veer | [ALGOL 68 Genie](https://jmvdveer.home.xs4all.nl/en.post.announcing-algol-68-genie.html)
+| Neil Matthew        | [ALGOL 68 RS](https://github.com/coolbikerdad)
 
 <br/>
 
-## Books
+### Books
 [github/coolbikerdad/Algol-68-Publications](https://github.com/coolbikerdad/Algol-68-Publications)
 
 <br/>
 
 ## Projects
-ALGOL 68 Syntax highlighting for Vim  
+### ALGOL 68 Syntax highlighting for Vim  
 [github/NevilleDNZ/syntax-algol68.vim](https://github.com/NevilleDNZ/syntax-algol68.vim)
 
-ALGOL 68 RS  
-[github/coolbikerdad](https://github.com/coolbikerdad)
-
-Cat Code
+### Cat Code
 [
-  ![Cat Code](doc/thumbs/cat-code.jpg)
+  <img src='doc/thumbs/cat-code.jpg' height='240px'/>
 ](https://github.com/pandasoli/cat-code)
