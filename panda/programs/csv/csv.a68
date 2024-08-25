@@ -1,0 +1,110 @@
+MODE FLEXFIELD = STRING;
+MODE FIELDS = [0] FLEXFIELD;
+MODE FLEXFIELDS =  REF FIELDS;
+MODE REGS = [0] FLEXFIELDS;
+MODE FLEXREGS = REF REGS;
+
+OP +:= = (REF FLEXFIELDS in out, FLEXFIELD item) REF FLEXFIELDS: (
+	HEAP [UPB in out + 1] FLEXFIELD new;
+	new[:UPB in out] := in out;
+	new[UPB new] := item;
+	in out := new
+);
+
+OP +:= = (REF FLEXREGS in out, FLEXFIELDS item) REF FLEXREGS: (
+	HEAP [UPB in out + 1] FLEXFIELDS new;
+	new[:UPB in out] := in out;
+	new[UPB new] := item; # identifier ELEMs are HEAP, so not a potential scope violation #
+	in out := new
+);
+
+CHAR nl = REPR 10;
+
+PROC read csv = (REF FILE csv) REGS: (
+	FLEXFIELD chunk := "";
+	INT chunk counter := 0;
+	INT fields count := 0;
+	INT line count := 0;
+	BOOL finished := FALSE;
+
+	PROC current = CHAR: chunk[chunk counter];
+
+	PROC next = CHAR: (
+		IF chunk counter = 0 OR chunk counter + 1 > UPB chunk THEN
+			get(csv, chunk);
+			get(csv, new line);
+			chunk +:= nl;
+
+			chunk counter := 0;
+			line count +:= 1
+		FI;
+
+		chunk counter +:= 1;
+		chunk[chunk counter]
+	);
+
+	next;
+
+	PROC parse = FLEXFIELDS: (
+		on logical file end(csv, (REF FILE eof csv) BOOL: ( done eof; TRUE ));
+
+		FLEXFIELDS fields := HEAP FIELDS := "";
+		BOOL in quotes := FALSE;
+		INT quote start := 0;
+
+		DO
+			IF in quotes THEN
+				IF current = """" THEN
+					# This probably would generate an error if eof
+						but I couldn't check it #
+					IF next = """" THEN
+						fields[UPB fields] +:= """";
+						next
+					ELSE
+						in quotes := FALSE
+					FI
+				ELSE
+					fields[UPB fields] +:= current;
+					next
+				FI
+			ELIF current = "," THEN
+				fields +:= "";
+				next
+			ELIF current = """" THEN
+				in quotes := TRUE;
+				next
+			ELIF current = nl THEN
+				next;
+				GOTO done
+			ELSE
+				fields[UPB fields] +:= current;
+				next
+			FI
+		OD;
+
+		done eof:
+		finished := TRUE;
+
+		done:
+		IF fields count > 0 AND UPB fields /= fields count THEN
+			printf(($"Error: unexpected number of fields ("g(-0)") in line "g(-0)" (expected "g(-0)")"l$, UPB fields, line count, fields count))
+		FI;
+
+		IF in quotes THEN
+			printf(($"Error: unclosed quotes starting in line "g(-0)" column "g(-0)l$, line count, quote start))
+		FI;
+
+		fields
+	);
+
+	FLEXFIELDS header = parse;
+	fields count := UPB header;
+
+	FLEXREGS regs := HEAP REGS := (header);
+
+	WHILE NOT finished DO
+		regs +:= parse
+	OD;
+
+	regs
+)
