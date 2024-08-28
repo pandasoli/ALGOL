@@ -1,9 +1,9 @@
 <div align='center'>
 
-<img src='doc/icon.png' alt='ALGOL logo icon' height='182'/>
+<img src='doc/icon.png' alt='ALGOL logo icon' height='182'>
 
-Logo by Neville
-
+Logo by [Neville Dempsey](https://github.com/NevilleDNZ)
+</div>
 <br/>
 
 ## Communities
@@ -13,29 +13,16 @@ Logo by Neville
 
 <br/>
 
-### Contributors
-| Name       | Folder             | GitHub
-| ---------- | ------------------ | -------
-| Panda Soli | [panda](panda)     | [github/pandasoli](https://github.com/pandasoli)
-| NevilleDNZ | [neville](neville) | [github/nevillednz](https://github.com/nevillednz)
+## Implementations
 
-<br/>
-
-### Implementations
-|                     |    |
-| ------------------- | ---
-| Marcel van der Veer | [ALGOL 68 Genie](https://jmvdveer.home.xs4all.nl/en.post.announcing-algol-68-genie.html)
-| Neil Matthew        | [ALGOL 68 RS](https://github.com/coolbikerdad)
-
-<br/>
-
-### Books
-[github/coolbikerdad/Algol-68-Publications](https://github.com/coolbikerdad/Algol-68-Publications)
+[NASE A60](https://bertnase.de/a60) - Datenschutz  
+[ALGOL 68 Genie](https://jmvdveer.home.xs4all.nl/en.post.announcing-algol-68-genie.html) - Marcel van der Veer  
+[ALGOL 68 RS](https://github.com/coolbikerdad) - Nail Matthew
 
 <br/>
 
 ## Projects
-### ALGOL 68 Syntax highlighting for Vim  
+### Syntax highlighting for Vim  
 [github/NevilleDNZ/syntax-algol68.vim](https://github.com/NevilleDNZ/syntax-algol68.vim)
 
 ### Cat Code
