@@ -1,18 +1,18 @@
-MODE FLEXFIELD = STRING;
-MODE FIELDS = [0] FLEXFIELD;
-MODE FLEXFIELDS =  REF FIELDS;
-MODE REGS = [0] FLEXFIELDS;
-MODE FLEXREGS = REF REGS;
+MODE CSVFLEXFIELD = STRING;
+MODE CSVFIELDS = [0] CSVFLEXFIELD;
+MODE CSVFLEXFIELDS =  REF CSVFIELDS;
+MODE CSV = [0] CSVFLEXFIELDS;
+MODE FLEXCSV = REF CSV;
 
-OP +:= = (REF FLEXFIELDS in out, FLEXFIELD item) REF FLEXFIELDS: (
-	HEAP [UPB in out + 1] FLEXFIELD new;
+OP +:= = (REF CSVFLEXFIELDS in out, CSVFLEXFIELD item) REF CSVFLEXFIELDS: (
+	HEAP [UPB in out + 1] CSVFLEXFIELD new;
 	new[:UPB in out] := in out;
 	new[UPB new] := item;
 	in out := new
 );
 
-OP +:= = (REF FLEXREGS in out, FLEXFIELDS item) REF FLEXREGS: (
-	HEAP [UPB in out + 1] FLEXFIELDS new;
+OP +:= = (REF FLEXCSV in out, CSVFLEXFIELDS item) REF FLEXCSV: (
+	HEAP [UPB in out + 1] CSVFLEXFIELDS new;
 	new[:UPB in out] := in out;
 	new[UPB new] := item; # identifier ELEMs are HEAP, so not a potential scope violation #
 	in out := new
@@ -20,8 +20,8 @@ OP +:= = (REF FLEXREGS in out, FLEXFIELDS item) REF FLEXREGS: (
 
 CHAR nl = REPR 10;
 
-PROC read csv = (REF FILE csv) REGS: (
-	FLEXFIELD chunk := "";
+PROC read csv = (REF FILE csv) FLEXCSV: (
+	CSVFLEXFIELD chunk := "";
 	INT chunk counter := 0;
 	INT fields count := 0;
 	INT line count := 0;
@@ -45,10 +45,10 @@ PROC read csv = (REF FILE csv) REGS: (
 
 	next;
 
-	PROC parse = FLEXFIELDS: (
+	PROC parse = CSVFLEXFIELDS: (
 		on logical file end(csv, (REF FILE eof csv) BOOL: ( done eof; TRUE ));
 
-		FLEXFIELDS fields := HEAP FIELDS := "";
+		CSVFLEXFIELDS fields := HEAP CSVFIELDS := "";
 		BOOL in quotes := FALSE;
 		INT quote start := 0;
 
@@ -97,10 +97,10 @@ PROC read csv = (REF FILE csv) REGS: (
 		fields
 	);
 
-	FLEXFIELDS header = parse;
+	CSVFLEXFIELDS header = parse;
 	fields count := UPB header;
 
-	FLEXREGS regs := HEAP REGS := (header);
+	FLEXCSV regs := HEAP CSV := (header);
 
 	WHILE NOT finished DO
 		regs +:= parse

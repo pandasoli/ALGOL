@@ -4,7 +4,7 @@ FILE f;
 INT err = open(f, "./tasks.csv", stand in channel);
 
 IF err = 0 THEN
-	REGS regs := read csv(f);
+	CSV regs = read csv(f);
 
 	FOR i TO UPB regs DO
 	  printf(($g(-0)": "$, i));
